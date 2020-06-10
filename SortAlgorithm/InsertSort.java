@@ -1,4 +1,4 @@
-import java.util.Date;
+import java.util.Arrays;
 
 public class InsertSort {
     public static void main(String[] args) {
@@ -9,14 +9,16 @@ public class InsertSort {
         //  binaryIsertSort(elem);
         //  quickSort(elem,0,4);
         //  shellSort(elem);
+        heapSort(elem);
 
-        for (int i = 0; i < elem.length; i++) {
+        for(int i = 0; i < elem.length; i++) {
             System.out.println(elem[i]);
         }
     }
 
     /**
-     * 1直接插入排序
+     * 1  插入算法  直接插入排序
+     * 将数组中的所有元素依次跟前面已经排好的元素相比较，如果选择的元素比已排序的元素小，则交换，直到全部元素都比较过为止
      */
     public static void insertSort(int[] arr) {
         for (int i = 1; i < arr.length; i++) {
@@ -35,7 +37,7 @@ public class InsertSort {
     }
 
     /**
-     * 2交换次数较多的直接插入法
+     * 1 插入算法  交换次数较多的直接插入法
      */
     public static void insertSort2(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
@@ -52,7 +54,7 @@ public class InsertSort {
     }
 
     /**
-     * 3希尔排序
+     * 1 插入算法 希尔排序
      * 1. 选择一个增量序列t1，t2，…，tk，其中ti>tj，tk=1；（一般初次取数组半长，之后每次再减半，直到增量为1）
      * 2. 按增量序列个数k，对序列进行k 趟排序；
      * 3. 每趟排序，根据对应的增量ti，将待排序列分割成若干长度为m 的子序列，分别对各子表进行直接插入排序。
@@ -79,7 +81,7 @@ public class InsertSort {
     }
 
     /**
-     * 4折半插入排序
+     * 1 插入算法  折半插入排序
      * 取已经排好序的数组的中间元素，与插入的数据进行比较  比较次数减少
      */
     public static void binaryIsertSort(int[] arr) {
@@ -110,7 +112,9 @@ public class InsertSort {
     }
 
     /**
-     * 5冒泡排序
+     * 2 交换算法 冒泡排序
+     * 比较相邻的元素。如果第一个比第二个大，就交换他们两个
+     * 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。
      */
 
     public static void bubbleSort(int[] arr) {
@@ -126,7 +130,7 @@ public class InsertSort {
     }
 
     /**
-     * 6快速排序(递归)
+     * 2 交换算法 快速排序(递归)
      */
     public static void quickSort(int[] arr, int left, int right) {
         if (left > right) {
@@ -162,8 +166,9 @@ public class InsertSort {
     }
 
     /**
-     * 7简单选择排序
+     * 3 选择算法 简单选择排序
      */
+
     public static void selectSort(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int min = i;
@@ -180,10 +185,151 @@ public class InsertSort {
     }
 
     /**
-     * 8
+     * 3 选择算法 堆排序
+     * 以大顶堆为例，堆排序的过程就是将待排序的序列构造成一个堆，选出堆中最大的移走，再把剩余的元素调整成堆，找出最大的再移走，重复直至有序。
+     * 最大堆调整（Max_Heapify）：将堆的末端子节点作调整，使得子节点永远小于父节点
+     * 创建最大堆（Build_Max_Heap）：将堆所有数据重新排序
+     * 堆排序（HeapSort）：移除位在第一个数据的根节点，并做最大堆调整的递归运算
      */
-    public static void e123() {
+    public static void heapSort(int[] arr) {
+        for (int i = arr.length; i > 0; i--) {
+            max_heapify(arr, i);
+            //堆顶元素与Kn交换
+            int temp = arr[0];
+            arr[0] = arr[i - 1];
+            arr[i - 1] = temp;
+        }
+
 
     }
+
+    private static void max_heapify(int[] arr, int limit) {
+        if (arr.length <= 0 || arr.length < limit) {
+            return;
+        }
+        int parentIdx = limit / 2;
+        for (; parentIdx >= 0; parentIdx--) {
+            if (parentIdx * 2 >= limit) {
+                continue;
+            }
+            //左节点位置
+            int left = parentIdx * 2;
+            //右节点位置，若没有右节点 默认为左节点
+            int right = (left + 1) >= limit ? left : (left + 1);
+
+            int maxChildId = arr[left] >= arr[right] ? left : right;
+
+            //交换父节点左右结点中最大值
+            if (arr[maxChildId] > arr[parentIdx]) {
+                int temp = arr[maxChildId];
+                arr[parentIdx] = arr[maxChildId];
+                arr[maxChildId] = temp;
+
+            }
+        }
+    }
+
+    /**
+     * 4 归并排序
+     * 归并排序算法是将两个（或两个以上）有序表合并成一个新的有序表，即把待排序序列分为若干个子序列，每个子序列是有序的。然后再把有序子序列合并为整体有序序列。
+     * ①. 将序列每相邻两个数字进行归并操作，形成 floor(n/2)个序列，排序后每个序列包含两个元素；
+     * ②. 将上述序列再次归并，形成 floor(n/4)个序列，每个序列包含四个元素；
+     * ③. 重复步骤②，直到所有元素排序完毕。
+     */
+    public static int[] mergingSort(int[] arr) {
+        if (arr.length <= 1) {
+            return arr;
+        }
+
+        int num = arr.length >> 1;
+        int[] leftArr = Arrays.copyOfRange(arr, 0, num);
+        int[] rightArr = Arrays.copyOfRange(arr, num, arr.length);
+        System.out.println("split two array: " + Arrays.toString(leftArr) + " And " + Arrays.toString(rightArr));
+        return mergeTwoArray(mergingSort(leftArr), mergingSort(rightArr));
+        //不断拆分为最小单元，再排序合并
+    }
+
+    private static int[] mergeTwoArray(int[] arr1, int[] arr2) {
+        int i = 0, j = 0, k = 0;
+        int[] result = new int[arr1.length + arr2.length];
+        //申请额外的空间存储合并之后的数组
+        while (i < arr1.length && j < arr2.length) {
+            //选取两个序列中的较小值放入新数组
+            if (arr1[i] <= arr2[j]) {
+                result[k++] = arr1[i++];
+            } else {
+                result[k++] = arr2[j++];
+            }
+        }
+        while (i < arr1.length) {
+            //序列1中多余的元素移入新数组
+            result[k++] = arr1[i++];
+        }
+        while (j < arr2.length) {
+            //序列2中多余的元素移入新数组
+            result[k++] = arr2[j++];
+        }
+        System.out.println("Merging: " + Arrays.toString(result));
+        return result;
+    }
+
+    /**
+     * 5 在线性时间内排序  基数排序（LSD 从低位开始）
+     *
+     * 基数排序适用于：
+     *  (1)数据范围较小，建议在小于1000
+     *  (2)每个数值都要大于等于0
+     *
+     * ①. 取得数组中的最大数，并取得位数；
+     * ②. arr为原始数组，从最低位开始取每个位组成radix数组；
+     * ③. 对radix进行计数排序（利用计数排序适用于小范围数的特点）；
+     * @param arr    待排序数组
+     */
+    public static void radixSort(int[] arr){
+        if(arr.length <= 1) {return;}
+
+        //取得数组中的最大数，并取得位数
+        int max = 0;
+        for(int i = 0; i < arr.length; i++){
+            if(max < arr[i]){
+                max = arr[i];
+            }
+        }
+        int maxDigit = 1;
+        while(max / 10 > 0){
+            maxDigit++;
+            max = max / 10;
+        }
+        System.out.println("maxDigit: " + maxDigit);
+
+        //申请一个桶空间
+        int[][] buckets = new int[10][arr.length];
+        int base = 10;
+
+        //从低位到高位，对每一位遍历，将所有元素分配到桶中
+        for(int i = 0; i < maxDigit; i++){
+            int[] bktLen = new int[10];
+            //存储各个桶中存储元素的数量
+
+            //分配：将所有元素分配到桶中
+            for(int j = 0; j < arr.length; j++){
+                int whichBucket = (arr[j] % base) / (base / 10);
+                buckets[whichBucket][bktLen[whichBucket]] = arr[j];
+                bktLen[whichBucket]++;
+            }
+
+            //收集：将不同桶里数据挨个捞出来,为下一轮高位排序做准备,由于靠近桶底的元素排名靠前,因此从桶底先捞
+            int k = 0;
+            for(int b = 0; b < buckets.length; b++){
+                for(int p = 0; p < bktLen[b]; p++){
+                    arr[k++] = buckets[b][p];
+                }
+            }
+
+            System.out.println("Sorting: " + Arrays.toString(arr));
+            base *= 10;
+        }
+    }
 }
+
 
