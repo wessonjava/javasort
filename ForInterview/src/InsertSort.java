@@ -6,13 +6,13 @@ import java.util.Arrays;
 public class InsertSort {
     public static void main(String[] args) {
         int[] elem = {13, 2, 15, 10, 3};
-        //  insertSort(elem);
+        insertSort(elem);
         //  insertSort2(elem);
         //  shellSort(elem);
         //  binaryIsertSort(elem);
         //  quickSort(elem,0,4);
         //  shellSort(elem);
-        heapSort(elem);
+       // heapSort(elem);
 
         for (int i = 0; i < elem.length; i++) {
             System.out.println(elem[i]);
