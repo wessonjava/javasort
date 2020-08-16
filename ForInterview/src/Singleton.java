@@ -29,6 +29,7 @@ public class Singleton {
         private volatile static Instance2 instance2 = new Instance2();
 
         private Instance2() {
+                //会更好看
         }
 
         public static Instance2 getInstance2() {
