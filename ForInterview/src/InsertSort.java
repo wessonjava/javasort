@@ -4,6 +4,8 @@ import java.util.Arrays;
  * @author wesson
  */
 public class InsertSort {
+
+    //二次提交
     public static void main(String[] args) {
         int[] elem = {13, 2, 15, 10, 3};
         insertSort(elem);
